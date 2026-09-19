@@ -1,0 +1,20 @@
+{
+  "name": "JUST - Just Dodge",
+  "short_name": "JUST",
+  "description": "JUST — аркада с 2000 уровней, скинами и кейсами.",
+  "start_url": "/Just/",
+  "scope": "/Just/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#050b0b",
+  "theme_color": "#050b0b",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjgwIiBmaWxsPSIjMDUwYjBiIi8+PHRleHQgeD0iMjU2IiB5PSIzNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjgwIiBmb250LWZhbWlseT0iUnViaWssQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iIzdmZjBlMCI+SjwvdGV4dD48L3N2Zz4=",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
