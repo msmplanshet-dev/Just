@@ -4,15 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#050b0b">
-<title>JUST</title> 
-<link rel="manifest" href="manifest.json">
-<meta name="description" content="JUST - Just Dodge">
+<!-- FIX: отключаем авто-затемнение Android WebView -->
+<meta name="color-scheme" content="only light">
+<meta name="supported-color-schemes" content="light">
+<title>JUST</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
 <style>
+/* FIX: фиксируем цветовую схему, отключаем авто-затемнение WebView */
+:root{
+  color-scheme: only light;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+html,body{ background-color:#050b0b; }
+#app, #app.theme-dark, #app.theme-light{ color-scheme: only light; }
+
 @property --toast-progress {syntax:'<percentage>';initial-value:100%;inherits:false;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -185,18 +195,27 @@ body{font-family:'Rubik',system-ui,sans-serif;background:#050b0b;color:#e8e6e1;o
 .play-row .pill{flex:1;height:48px;font-size:16px}
 #screenGame{padding:0 !important;overflow:hidden;background:linear-gradient(180deg,#d9be5e 0%,#b89a3a 50%,#8e7422 100%)}
 #app.theme-dark #screenGame{background:linear-gradient(180deg,#1a1a1e 0%,#0f0f13 50%,#050508 100%) !important}
+
+/* FIX: увеличенный HUD во время матча */
 #screenGame .hud{
-  position:absolute;top:6px;left:6px;right:6px;z-index:5;margin:0;
-  background:rgba(0,0,0,.20);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.10);color:#e8e6e1;
+  position:absolute;top:8px;left:8px;right:8px;z-index:5;margin:0;
+  background:rgba(0,0,0,.34);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.14);color:#e8e6e1;
   pointer-events:none;
+  padding:14px 16px;
+  border-radius:18px;
+  font-size:15px;
+  gap:12px;
 }
 #screenGame .hud button{pointer-events:auto}
-#screenGame .hud .hud-stats{color:#e8e6e1}
+#screenGame .hud .hud-stats{color:#e8e6e1;font-size:14.5px;}
 #screenGame .hud b{color:#7ff0e0}
-#screenGame .hud .coin-live{color:#fbbf24}
-#screenGame .hud .coin-live small{color:#cbd5e1}
-#app.theme-light #screenGame .hud{background:rgba(40,25,10,.22);border-color:rgba(60,40,20,.28);color:#fff}
+#screenGame .hud .coin-live{color:#fbbf24;font-size:13px;}
+#screenGame .hud .coin-live small{color:#cbd5e1;font-size:11.5px;}
+#screenGame .hud .back-btn{width:44px;height:40px;font-size:22px;border-radius:12px;}
+#screenGame .hud .pause-btn-hud{width:52px;height:40px;border-radius:12px;}
+#screenGame .hud .pause-btn-hud::before{width:20px;height:3px;box-shadow:0 -7px 0 currentColor, 0 7px 0 currentColor;}
+#app.theme-light #screenGame .hud{background:rgba(40,25,10,.30);border-color:rgba(60,40,20,.35);color:#fff}
 #app.theme-light #screenGame .hud b{color:#fde047}
 #app.theme-light #screenGame .hud .coin-live{color:#fde047}
 #app.theme-light #screenGame .hud .coin-live small{color:#e0c976}
@@ -213,7 +232,7 @@ body{font-family:'Rubik',system-ui,sans-serif;background:#050b0b;color:#e8e6e1;o
 .pause-btn-hud::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:18px;height:2.5px;background:currentColor;border-radius:2px;box-shadow:0 -6px 0 currentColor, 0 6px 0 currentColor}
 @keyframes gameStartPop{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
 canvas.starting, #screenGame .hud.starting{animation:gameStartPop .35s ease-out}
-.hud{width:auto;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:8px 10px;border-radius:14px;margin-bottom:10px;font-size:12px;font-weight:800;flex:none;backdrop-filter:blur(4px);z-index:3}
+.hud{width:auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;margin-bottom:12px;font-size:14.5px;font-weight:800;flex:none;backdrop-filter:blur(4px);z-index:3}
 .hud b{color:#0e7490}
 .hud .coin-live{color:#a16207;font-size:11px;white-space:nowrap;flex:none;display:inline-flex;align-items:center;gap:3px}
 .hud .coin-live small{color:#78350f;font-size:9.5px;font-weight:700;margin-left:2px}
@@ -743,6 +762,18 @@ let db = null;
 try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch(e){ console.error(e); }
 
 const GAME_VERSION = '1.0-beta';
+
+/* FIX: конвертер hex → rgba для корректной работы на старых Android WebView */
+function hexToRgba(hex, alpha){
+  if(!hex || typeof hex !== 'string') return 'rgba(0,0,0,0)';
+  hex = hex.replace('#','').trim();
+  if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  if(hex.length !== 6) return 'rgba(0,0,0,0)';
+  const r = parseInt(hex.substr(0,2),16) || 0;
+  const g = parseInt(hex.substr(2,2),16) || 0;
+  const b = parseInt(hex.substr(4,2),16) || 0;
+  return 'rgba('+r+','+g+','+b+','+alpha+')';
+}
 
 // ============ MUSIC TRACKS (20) ============
 const MUSIC_TRACKS = [
@@ -1346,12 +1377,14 @@ function getSkinImage(s){
 }
 function preloadAllSkins(){ ALL_SKINS.forEach(s => getSkinImage(s)); }
 
+/* FIX: используем hexToRgba вместо 8-значного hex (не работает на Android WebView < 53) */
 function miniHTML(s,size){
   const gl = s.glow || s.c1;
   const img = getSkinImage(s);
   const total = size * 7 / 3;
   const offset = -size * 2 / 3;
-  return `<div class="mini-holder" style="position:relative;width:${size}px;height:${size}px;overflow:visible;"><img src="${img.src}" style="position:absolute;left:${offset}px;top:${offset}px;width:${total}px;height:${total}px;display:block;pointer-events:none;filter:drop-shadow(0 ${Math.round(size*0.06)}px ${Math.round(size*0.18)}px rgba(0,0,0,.55)) drop-shadow(0 0 ${Math.round(size*0.28)}px ${gl}55);"></div>`;
+  const glowRgba = hexToRgba(gl, 0.33);
+  return `<div class="mini-holder" style="position:relative;width:${size}px;height:${size}px;overflow:visible;"><img src="${img.src}" style="position:absolute;left:${offset}px;top:${offset}px;width:${total}px;height:${total}px;display:block;pointer-events:none;filter:drop-shadow(0 ${Math.round(size*0.06)}px ${Math.round(size*0.18)}px rgba(0,0,0,.55)) drop-shadow(0 0 ${Math.round(size*0.28)}px ${glowRgba});"></div>`;
 }
 
 function copyToClipboard(text){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(()=>toast(T('toast.codeCopied'),'ok'),()=>legacyCopy(text));return;}legacyCopy(text);}
@@ -1376,7 +1409,6 @@ function setSmoothness(v){
   if(gsv) gsv.textContent = pointerSmoothness;
 }
 
-// Populate music track selects (with custom dropdown)
 function populateTrackSelects(){
   const configs = [
     {id:'menuTrackSelect', which:'menu'},
@@ -1409,7 +1441,6 @@ function populateTrackSelects(){
       });
     };
   });
-  // Превращаем в красивые кастомные селекты (тот же вид, что и в инвентаре при сортировке)
   setupCustomSelect(document.getElementById('menuTrackSelect'), 'settings.menuMusic');
   setupCustomSelect(document.getElementById('gameTrackSelect'), 'settings.matchMusic');
   setupCustomSelect(document.getElementById('gsMenuTrackSelect'), 'settings.menuMusic');
@@ -1592,7 +1623,6 @@ function syncVolumeUI(){
   if(gm)gm.value=volMusic.value;if(gs)gs.value=volSfx.value;if(gl)gl.value=currentLang;
   const gmv=document.getElementById('gsVolMusicVal'),gsv=document.getElementById('gsVolSfxVal');
   if(gmv)gmv.textContent=volMusic.value;if(gsv)gsv.textContent=volSfx.value;
-  // Sync music track selects
   const mt1=document.getElementById('menuTrackSelect'),mt2=document.getElementById('gsMenuTrackSelect');
   const bt1=document.getElementById('gameTrackSelect'),bt2=document.getElementById('gsGameTrackSelect');
   if(mt1){mt1.value=Sound.menuTrackIdx;refreshCustomSelect(mt1);}
@@ -1678,7 +1708,10 @@ document.getElementById('tabInvCases').onclick=()=>{document.getElementById('tab
 document.getElementById('tabInvSkins').onclick=()=>{document.getElementById('tabInvSkins').classList.add('on');document.getElementById('tabInvCases').classList.remove('on');document.getElementById('invSkinsView').hidden=false;document.getElementById('invCasesView').hidden=true;rebuildSortOptions();renderInvSkins();};
 function renderInventory(){updateCoins();rebuildSortOptions();renderInvCases();renderInvSkins();}
 function renderInvCases(){const cv=document.getElementById('invCasesView');if(!cv)return;const entries=Object.entries(myCases).filter(([id,c])=>c>0&&CASE_BY_ID(id));if(!entries.length){cv.innerHTML=`<div class="my-cases-empty"><div class="big">📦</div>${T('inventory.empty.cases')}</div>`;return;}const arr=entries.map(([id,cnt])=>({c:CASE_BY_ID(id),cnt,id}));if(caseSort==='rarity')arr.sort((a,b)=>TIER_ORDER[a.c.rarity]-TIER_ORDER[b.c.rarity]);else if(caseSort==='rarity_asc')arr.sort((a,b)=>TIER_ORDER[b.c.rarity]-TIER_ORDER[a.c.rarity]);else if(caseSort==='price_asc')arr.sort((a,b)=>a.c.price-b.c.price);else if(caseSort==='price_desc')arr.sort((a,b)=>b.c.price-a.c.price);const grid=document.createElement('div');grid.className='my-cases-grid';arr.forEach(({c,cnt,id})=>{const d=document.createElement('div');d.className='my-case';d.style.setProperty('--tint',c.tint);d.innerHTML=`<div class="ic">${c.svg}</div><div class="nm">${caseName(c)}</div><div class="cnt">×${cnt}</div><div class="open-label">${T('inventory.open')}</div>`;d.onclick=()=>openOwnedCase(id);grid.appendChild(d);});cv.innerHTML='';cv.appendChild(grid);}
-function renderInvSkins(){const g=document.getElementById('invSkinsGrid');if(!g)return;g.innerHTML='';const list=ALL_SKINS.filter(s=>owned.has(s.id));if(!list.length){g.innerHTML=`<div class="my-cases-empty" style="grid-column:1/-1"><div class="big">🎨</div>${T('inventory.empty.skins')}</div>`;return;}const arr=list.slice();if(skinSort==='rarity')arr.sort((a,b)=>TIER_ORDER[a.tier]-TIER_ORDER[b.tier]||a.name.localeCompare(b.name));else if(skinSort==='rarity_asc')arr.sort((a,b)=>TIER_ORDER[b.tier]-TIER_ORDER[a.tier]||a.name.localeCompare(b.name));else if(skinSort==='name')arr.sort((a,b)=>a.name.localeCompare(b.name));else if(skinSort==='name_desc')arr.sort((a,b)=>b.name.localeCompare(a.name));arr.forEach(s=>{const eq=equipped===s.id;const d=document.createElement('div');d.className='skin-card'+(eq?' equipped':'');d.setAttribute('data-skin-id', s.id);const tierColor = TIERS[s.tier].color;d.style.setProperty('--tier-color', tierColor);d.style.setProperty('--tier-glow', tierColor + '99');d.innerHTML=miniHTML(s,54)+`<div class="nm2">${s.name}</div><div class="rr" style="color:${tierColor}">${tierName(s.tier)}</div>`;d.onclick=()=>{equipped=s.id;save();renderInvSkins();renderEquippedChip();toast(T('toast.equipped')+s.name,'ok');};g.appendChild(d);});}
+function renderInvSkins(){const g=document.getElementById('invSkinsGrid');if(!g)return;g.innerHTML='';const list=ALL_SKINS.filter(s=>owned.has(s.id));if(!list.length){g.innerHTML=`<div class="my-cases-empty" style="grid-column:1/-1"><div class="big">🎨</div>${T('inventory.empty.skins')}</div>`;return;}const arr=list.slice();if(skinSort==='rarity')arr.sort((a,b)=>TIER_ORDER[a.tier]-TIER_ORDER[b.tier]||a.name.localeCompare(b.name));else if(skinSort==='rarity_asc')arr.sort((a,b)=>TIER_ORDER[b.tier]-TIER_ORDER[a.tier]||a.name.localeCompare(b.name));else if(skinSort==='name')arr.sort((a,b)=>a.name.localeCompare(b.name));else if(skinSort==='name_desc')arr.sort((a,b)=>b.name.localeCompare(a.name));arr.forEach(s=>{const eq=equipped===s.id;const d=document.createElement('div');d.className='skin-card'+(eq?' equipped':'');d.setAttribute('data-skin-id', s.id);const tierColor = TIERS[s.tier].color;d.style.setProperty('--tier-color', tierColor);
+    /* FIX: используем rgba вместо 8-значного hex */
+    d.style.setProperty('--tier-glow', hexToRgba(tierColor, 0.6));
+    d.innerHTML=miniHTML(s,54)+`<div class="nm2">${s.name}</div><div class="rr" style="color:${tierColor}">${tierName(s.tier)}</div>`;d.onclick=()=>{equipped=s.id;save();renderInvSkins();renderEquippedChip();toast(T('toast.equipped')+s.name,'ok');};g.appendChild(d);});}
 
 let openCaseTimers = [];
 function clearOpenCaseTimers(){ openCaseTimers.forEach(t=>clearTimeout(t)); openCaseTimers = []; }
@@ -1910,4 +1943,4 @@ window.addEventListener('resize',()=>{if(document.getElementById('screenGame').c
 })();
 </script>
 </body>
-  </html> 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </html>
