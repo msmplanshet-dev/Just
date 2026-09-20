@@ -11,19 +11,11 @@
   "theme_color": "#050b0b",
   "lang": "ru",
   "icons": [
-    {
-      "src": "/Just/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "/Just/icon-512.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/Just/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/Just/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "screenshots": [
-    {
-      "src": "/Just/screen1.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
+    { "src": "/Just/screen1.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow" }
   ]
 }
