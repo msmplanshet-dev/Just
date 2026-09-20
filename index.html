@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#050b0b">
-<!-- FIX: отключаем авто-затемнение Android WebView -->
-<meta name="color-scheme" content="only light">
-<meta name="supported-color-schemes" content="light">
 <title>JUST</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,15 +11,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
 <style>
-/* FIX: фиксируем цветовую схему, отключаем авто-затемнение WebView */
-:root{
-  color-scheme: only light;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-html,body{ background-color:#050b0b; }
-#app, #app.theme-dark, #app.theme-light{ color-scheme: only light; }
-
 @property --toast-progress {syntax:'<percentage>';initial-value:100%;inherits:false;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -195,8 +183,6 @@ body{font-family:'Rubik',system-ui,sans-serif;background:#050b0b;color:#e8e6e1;o
 .play-row .pill{flex:1;height:48px;font-size:16px}
 #screenGame{padding:0 !important;overflow:hidden;background:linear-gradient(180deg,#d9be5e 0%,#b89a3a 50%,#8e7422 100%)}
 #app.theme-dark #screenGame{background:linear-gradient(180deg,#1a1a1e 0%,#0f0f13 50%,#050508 100%) !important}
-
-/* FIX: увеличенный HUD во время матча */
 #screenGame .hud{
   position:absolute;top:8px;left:8px;right:8px;z-index:5;margin:0;
   background:rgba(0,0,0,.34);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
@@ -763,7 +749,7 @@ try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch(
 
 const GAME_VERSION = '1.0-beta';
 
-/* FIX: конвертер hex → rgba для корректной работы на старых Android WebView */
+/* FIX: конвертер hex -> rgba для корректной работы на старых Android WebView */
 function hexToRgba(hex, alpha){
   if(!hex || typeof hex !== 'string') return 'rgba(0,0,0,0)';
   hex = hex.replace('#','').trim();
@@ -775,7 +761,6 @@ function hexToRgba(hex, alpha){
   return 'rgba('+r+','+g+','+b+','+alpha+')';
 }
 
-// ============ MUSIC TRACKS (20) ============
 const MUSIC_TRACKS = [
   {name:'Neon Dream',   m:[[146.83,174.61,220],[116.54,146.83,174.61],[174.61,220,261.63],[130.81,164.81,196]],    mb:[73.42,58.27,87.31,65.41],    mt:4400, mw:'sine',     gb:[98,98,116.54,116.54,130.81,130.81,98,110],      ga:[392,466,587,466,523,622,784,622],  gt:360},
   {name:'City Pulse',   m:[[174.61,220,261.63],[196,246.94,293.66],[220,261.63,329.63],[196,246.94,293.66]],        mb:[87.31,98,110,98],            mt:4000, mw:'triangle', gb:[130.81,146.83,164.81,146.83,130.81,110,98,110], ga:[523,587,698,587,659,784,880,784],  gt:340},
@@ -1943,4 +1928,4 @@ window.addEventListener('resize',()=>{if(document.getElementById('screenGame').c
 })();
 </script>
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </html>
+                                                   </html>
