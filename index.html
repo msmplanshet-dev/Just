@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#050b0b">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="only light">
 <title>JUST</title>
 <link rel="manifest" href="manifest.json">
 <meta name="description" content="JUST - Just Dodge, аркада с 2000 уровней">
@@ -14,20 +14,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
 <style>
-:root {
-  color-scheme: light;
-  forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
-}
-html, body {
-  background-color: #050b0b !important;
-  forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
-}
-#app, #app * {
-  forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
-}
+:root { color-scheme: only light; }
 @property --toast-progress {syntax:'<percentage>';initial-value:100%;inherits:false;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -201,7 +188,7 @@ body{font-family:'Rubik',system-ui,sans-serif;background:#050b0b;color:#e8e6e1;o
 #screenGame{padding:0 !important;overflow:hidden;background:linear-gradient(180deg,#d9be5e 0%,#b89a3a 50%,#8e7422 100%)}
 #app.theme-dark #screenGame{background:linear-gradient(180deg,#1a1a1e 0%,#0f0f13 50%,#050508 100%) !important}
 
-/* ============ FIX: КОМПАКТНЫЙ HUD БЕЗ ОБРЕЗКИ ============ */
+/* ============ КОМПАКТНЫЙ HUD ============ */
 #screenGame .hud{
   position:absolute;top:6px;left:6px;right:6px;z-index:5;margin:0;
   background:rgba(0,0,0,.42);color:#e8e6e1;
@@ -253,6 +240,9 @@ body{font-family:'Rubik',system-ui,sans-serif;background:#050b0b;color:#e8e6e1;o
   gap:3px;
   padding:0;
   font-size:0;
+  background:transparent;
+  border:none;
+  cursor:pointer;
 }
 .pause-btn-hud .bar{
   display:block;
@@ -269,7 +259,7 @@ body{font-family:'Rubik',system-ui,sans-serif;background:#050b0b;color:#e8e6e1;o
 #app.theme-light #screenGame .hud .hud-stats{color:#fff;}
 #app.theme-light #screenGame .hud .coin-live{color:#fde047}
 #app.theme-light #screenGame .hud .coin-live small{color:#e0c976}
-/* ============ /FIX ============ */
+/* ============ /HUD ============ */
 
 #screenGame canvas{
   position:absolute;inset:0;width:100%;height:100%;
@@ -1980,4 +1970,4 @@ window.addEventListener('resize',()=>{if(document.getElementById('screenGame').c
 })();
 </script>
 </body>
-</html>
+                                                                  </html>
